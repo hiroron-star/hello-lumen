@@ -2,62 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Laravel\Lumen\Routing\Controller as BaseController;
+use Laravel\Lumen\Routing\Controller;
 use Illuminate\Http\Request;
-use App\Models\Todo;
+use App\Repositories\Eloquent\TodoRepository;
+use App\UseCases\Todo\CreateTodoUseCase;
 
-class TodoController extends BaseController
+class TodoController extends Controller
 {
-    // 一覧取得
-    public function index()
-    {
-        return response()->json(Todo::all());
-    }
-
-    // 1件取得
-    public function show($id)
-    {
-        $todo = Todo::find($id);
-        if (!$todo) {
-            return response()->json(['message' => 'Not Found'], 404);
-        }
-        return response()->json($todo);
-    }
-
-    // 作成
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'title' => 'required|string|max:255',
-        ]);
+        $data = $request->only(['title', 'description', 'is_done']);
 
-        $todo = Todo::create($request->only(['title', 'description', 'is_done']));
+        $useCase = new CreateTodoUseCase(new TodoRepository());
+        $todo = $useCase->handle($data);
+
         return response()->json($todo, 201);
-    }
-
-    // 更新
-    public function update(Request $request, $id)
-    {
-        $todo = Todo::find($id);
-        if (!$todo) {
-            return response()->json(['message' => 'Not Found'], 404);
-        }
-
-        $todo->fill($request->only(['title', 'description', 'is_done']));
-        $todo->save();
-
-        return response()->json($todo);
-    }
-
-    // 削除
-    public function destroy($id)
-    {
-        $todo = Todo::find($id);
-        if (!$todo) {
-            return response()->json(['message' => 'Not Found'], 404);
-        }
-
-        $todo->delete();
-        return response()->json(null, 204);
     }
 }
