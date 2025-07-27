@@ -7,13 +7,13 @@ class Todo
     public int $id;
     public string $title;
     public ?string $description;
-    public bool $completed;
+    public bool $is_done;
 
-    public function __construct($id, $title, $description, $completed)
+    public function __construct($id, $title, $description, $is_done)
     {
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
-        $this->completed = $completed;
+        $this->is_done = $is_done;
     }
 }

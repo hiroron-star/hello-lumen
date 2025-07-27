@@ -14,8 +14,8 @@ class CreateTodoUseCase
         $this->repo = $repo;
     }
 
-    public function handle(array $data): Todo
+    public function handle(array $input): Todo
     {
-        return $this->repo->create($data);
+        return $this->repo->create($input);
     }
 }
