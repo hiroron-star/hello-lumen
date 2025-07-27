@@ -25,11 +25,17 @@ $router->get('/', function () {
 
 $router->post('/echo', 'ExampleController@echo');
 
-$router->group(['prefix' => 'todos'], function () use ($router) {
-    $router->get('/', 'TodoController@index');
-    $router->get('{id}', 'TodoController@show');
-    $router->post('/', 'TodoController@store');
-    $router->put('{id}', 'TodoController@update');
-    $router->delete('{id}', 'TodoController@destroy');
-});
+// $router->group(['prefix' => 'todos'], function () use ($router) {
+//     $router->get('/', 'TodoController@index');
+//     $router->get('{id}', 'TodoController@show');
+//     $router->post('/', 'TodoController@store');
+//     $router->put('{id}', 'TodoController@update');
+//     $router->delete('{id}', 'TodoController@destroy');
+// });
+
+$router->post('/todos', 'TodoController@store');
+$router->get('/todos', 'TodoController@index');
+$router->get('/todos/{id}', 'TodoController@show');
+$router->put('/todos/{id}', 'TodoController@update');
+$router->delete('/todos/{id}', 'TodoController@destroy');
 
